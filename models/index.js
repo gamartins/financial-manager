@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const environment = process.env.NODE_ENV
+const environment = process.env.NODE_ENV || 'development'
 const config = require('../environment/environment.js')[environment]
 
 const connectionString = `${config.dialect}://${config.username}:${config.password}@${config.host}/${config.database}`

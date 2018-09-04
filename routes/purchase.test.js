@@ -9,11 +9,15 @@ chai.use(chaiLike)
 const expect = chai.expect
 const purchaseModel = require('../models/purchase')
 
-beforeEach((done) => {
-  purchaseModel.destroy({ truncate: true }).then(() => done())
-})
-
 describe ('Purchase Route', () => {
+  
+  beforeEach((done) => {
+    purchaseModel.destroy({ truncate: true }).then(() => done())
+  })
+  
+  after((done) => {
+    purchaseModel.destroy({ truncate: true }).then(() => done())
+  })
 
   it ('should return a list of purchases', (done) => {
     chai.request(app).get('/purchases').end((err, res) => {
