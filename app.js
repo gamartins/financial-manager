@@ -6,6 +6,7 @@ var logger = require('morgan')
 var indexRouter = require('./routes/index')
 var purchaseRouter = require('./routes/purchase')
 var loanRouter = require('./routes/loan')
+var userRouter = require('./routes/user')
 
 var app = express()
 
@@ -18,5 +19,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', indexRouter)
 app.use('/purchases', purchaseRouter)
 app.use('/loans', loanRouter)
+app.use('/users', userRouter)
 
 module.exports = app
