@@ -76,7 +76,7 @@ describe ('Loan Route', () => {
 
     const loanUpdated = {
       name: "Linda",
-      description: "Uma coisa que ela comprou",
+      description: "Uma outra coisa que ela comprou",
       price: 39.90
     }
 

@@ -84,12 +84,12 @@ describe ('Purchase Route', () => {
     }
 
     const purchaseUpdated = {
-      date: "4/ago",
-      description: "Carrefour",
+      date: "5/ago",
+      description: "Extra",
       type: "Terceirossss",
-      price: 1,
+      price: 2,
       installments: 2,
-      observations: ""
+      observations: "Some observations"
     }
 
     purchaseModel.create(purchase).then(purchase => {
