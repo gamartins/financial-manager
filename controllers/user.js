@@ -13,4 +13,11 @@ userController.create = function(user) {
   })
 }
 
+userController.findByEmail = function(email) {
+  return this.model.find({
+    where: { email: email },
+    attributes: [ 'id', 'email', 'password' ]
+  })
+}
+
 module.exports = userController

@@ -7,6 +7,7 @@ var indexRouter = require('./routes/index')
 var purchaseRouter = require('./routes/purchase')
 var loanRouter = require('./routes/loan')
 var userRouter = require('./routes/user')
+var authRouter = require('./routes/auth')
 
 var app = express()
 
@@ -20,5 +21,6 @@ app.use('/', indexRouter)
 app.use('/purchases', purchaseRouter)
 app.use('/loans', loanRouter)
 app.use('/users', userRouter)
+app.use('/login', authRouter)
 
 module.exports = app
