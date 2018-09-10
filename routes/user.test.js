@@ -8,6 +8,7 @@ chai.use(chaiLike)
 
 const expect = chai.expect
 const userModel = require('../models/users')
+const authCtrl = require('../controllers/auth')
 
 describe ('User Route', () => {
   
@@ -19,21 +20,14 @@ describe ('User Route', () => {
     userModel.destroy({ truncate: true }).then(() => done())
   })
 
-  it ('should return a list of users', (done) => {
-    chai.request(app).get('/users').end((err, res) => {
-      expect(res).to.have.status(200)
-      expect(res.body).to.be.an('array')
-      done()
-    })
-  })
-
-  it ('should search a user by id', (done) => {
+  it ('should get a user by id with his token', (done) => {
     userModel.create({
       name: "Gabriel Martins",
       email: "gabriel@email.com",
       password: "123123"
-    }).then(() => {
-      chai.request(app).get('/users/1').end((err, res) => {
+    }).then(user => {
+      const token = authCtrl.getToken(user.dataValues.id)
+      chai.request(app).get('/users').set('authorization', token).end((err, res) => {
         expect(res).to.have.status(200)
         expect(res.body).to.be.an('object')
         done()
@@ -41,13 +35,14 @@ describe ('User Route', () => {
     })
   })
 
-  it ('should not return return the password in get by id', (done) => {
+  it ('should not return return the password', (done) => {
     userModel.create({
       name: "Gabriel Martins",
       email: "gabriel@email.com",
       password: "123123"
-    }).then(() => {
-      chai.request(app).get('/users/1').end((err, res) => {
+    }).then(user => {
+      const token = authCtrl.getToken(user.dataValues.id)
+      chai.request(app).get('/users').set('authorization', token).end((err, res) => {
         expect(res.body.password).to.be.undefined
         done()
       })
@@ -90,9 +85,10 @@ describe ('User Route', () => {
     }
 
     userModel.create(user).then(user => {
-      const userId = user.dataValues.id
+      const token = authCtrl.getToken(user.dataValues.id)
       chai.request(app)
-        .put(`/users/${userId}`)
+        .put(`/users`)
+        .set('authorization', token)
         .send(userUpdated)
         .end((err, res) => {
           expect(res).to.have.status(200)
@@ -108,9 +104,10 @@ describe ('User Route', () => {
       email: "gabriel@email.com", 
       password: "123123" })
     .then(user => {
-      const userId = user.dataValues.id
+      const token = authCtrl.getToken(user.dataValues.id)
       chai.request(app)
-        .del(`/users/${userId}`)
+        .del(`/users`)
+        .set('authorization', token)
         .end((err, res) => {
           expect(res).to.have.status(204)
           expect(res.body).to.be.empty

@@ -10,6 +10,11 @@ router.post('/', (req, res, next) => {
   const password = req.body.password
 
   userCtrl.findByEmail(email).then(user => {
+    if(!user) {
+      res.status(404).send({ message: 'User not found.'})
+      return
+    }
+
     const isPasswordValid = bcrypt.compareSync(password, user.dataValues.password)
     if(isPasswordValid)
       userCtrl.get(user.dataValues.id).then(user => {
